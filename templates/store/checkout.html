@@ -1,0 +1,8 @@
+{% extends 'store/base.html' %}
+{% block title %}Checkout | ShopEase{% endblock %}
+{% block content %}
+<div class="checkout-layout"><section class="checkout-form"><p class="eyebrow">ALMOST THERE</p><h1>Checkout</h1>
+  <form method="post">{% csrf_token %}{{ form.as_p }}<button class="button" type="submit">Place order</button></form>
+  <p class="note">This demo records the order; it does not collect or process online payments.</p></section>
+  <aside class="summary"><h2>Your order</h2>{% for item in items %}<div class="summary-line"><span>{{ item.product.name }} × {{ item.quantity }}</span><strong>₹{{ item.subtotal }}</strong></div>{% endfor %}<div class="summary-total"><span>Total</span><strong>₹{{ total }}</strong></div></aside></div>
+{% endblock %}

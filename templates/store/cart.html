@@ -1,0 +1,18 @@
+{% extends 'store/base.html' %}
+{% block title %}Your cart | ShopEase{% endblock %}
+{% block content %}
+<p class="eyebrow">YOUR SELECTION</p><h1 class="page-title">Shopping cart</h1>
+{% if items %}
+<div class="cart-layout"><div class="cart-list">
+  {% for item in items %}<article class="cart-row">
+    <div class="cart-thumb">{% if item.product.image_url %}<img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">{% else %}✦{% endif %}</div>
+    <div class="cart-product"><h3>{{ item.product.name }}</h3><p>₹{{ item.product.price }} each</p>
+      <form method="post" action="{% url 'update_cart' item.product.id %}" class="quantity-form">{% csrf_token %}
+        <input type="number" name="quantity" min="1" max="{{ item.product.stock }}" value="{{ item.quantity }}"><button class="small-button" type="submit">Update</button>
+      </form>
+      <form method="post" action="{% url 'remove_from_cart' item.product.id %}">{% csrf_token %}<button class="remove-button" type="submit">Remove</button></form>
+    </div><strong>₹{{ item.subtotal }}</strong>
+  </article>{% endfor %}
+</div><aside class="summary"><h2>Order summary</h2><div class="summary-line"><span>Subtotal</span><strong>₹{{ total }}</strong></div><div class="summary-line"><span>Delivery</span><span>Calculated separately if applicable</span></div><div class="summary-total"><span>Total</span><strong>₹{{ total }}</strong></div><a class="button full-button" href="{% url 'checkout' %}">Proceed to checkout</a></aside></div>
+{% else %}<div class="empty-state"><h2>Your cart is empty</h2><p>Looks like you haven't added anything yet.</p><a class="button" href="{% url 'home' %}">Browse products</a></div>{% endif %}
+{% endblock %}

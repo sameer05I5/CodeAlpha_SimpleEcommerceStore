@@ -1,0 +1,9 @@
+{% extends 'store/base.html' %}
+{% block title %}My orders | ShopEase{% endblock %}
+{% block content %}
+<p class="eyebrow">YOUR PURCHASES</p><h1 class="page-title">My orders</h1>
+{% for order in orders %}<article class="order-card"><div class="order-heading"><div><h3>Order #{{ order.id }}</h3><p>{{ order.created_at|date:"d M Y, h:i A" }}</p></div><span class="status">{{ order.status }}</span></div>
+  {% for item in order.items.all %}<div class="order-item"><span>{{ item.product.name }} × {{ item.quantity }}</span><span>₹{{ item.price }} each</span></div>{% endfor %}
+  <div class="summary-total"><span>Order total</span><strong>₹{{ order.total_amount }}</strong></div></article>
+{% empty %}<div class="empty-state"><h2>No orders yet</h2><p>Your placed orders will appear here.</p><a class="button" href="{% url 'home' %}">Start shopping</a></div>{% endfor %}
+{% endblock %}
